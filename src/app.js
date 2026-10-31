@@ -4,6 +4,7 @@ import { errorHandler } from './middleware/error-handler.js';
 import { notFoundHandler } from './middleware/not-found.js';
 import { requestId } from './middleware/request-id.js';
 import { requestLogger } from './middleware/request-logger.js';
+import { booksRouter } from './routes/books.routes.js';
 import { usersRouter } from './routes/users.routes.js';
 
 // Builds the Express app. Does NOT call listen() — server.js does that.
@@ -23,6 +24,7 @@ export function createApp() {
     res.json({ status: 'ok', uptimeSec: Math.round(process.uptime()) });
   });
   app.use('/api/v1/users', usersRouter);
+  app.use('/api/v1/books', booksRouter);
 
   // ── 3. Fallbacks (order matters: these must be LAST) ──
   app.use(notFoundHandler);

@@ -3,6 +3,8 @@ import { UsersController } from '../controllers/users.controller.js';
 import { validateBody } from '../middleware/validate-body.js';
 import { createUserSchema, updateUserSchema } from '../validators/user.schema.js';
 
+// Routes connect each URL and HTTP method to a controller action.
+// They also validate incoming request bodies before the action runs.
 const controller = new UsersController();
 
 export const usersRouter = Router();
