@@ -1,18 +1,12 @@
-import { UsersRepository } from '../repositories/users.repository.js';
-import { UsersService } from '../services/users.service.js';
 import { pageLinks } from '../utils/query.js';
 
-// The controller reads information from each HTTP request and calls the service.
-// It turns the service result into an HTTP response for the client.
+// Dependency Injection: the controller RECEIVES its service instead of creating it.
+// It no longer imports UsersService or UsersRepository at all.
 export class UsersController {
-  constructor() {
-    // The controller creates a real service and repository whenever it is constructed.
-    // Tests cannot easily pass in a fake service, so they are harder to isolate.
-    this.usersService = new UsersService(new UsersRepository());
+  constructor(usersService) {
+    this.usersService = usersService;
   }
 
-  // Express calls these handlers as plain functions, which can lose their class `this`.
-  // Arrow fields keep `this` bound to this controller instance.
   list = async (req, res) => {
     const { data, meta } = await this.usersService.list(req.query);
     res.json({ data, meta, links: pageLinks(req, meta) });
