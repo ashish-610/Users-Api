@@ -12,6 +12,7 @@ const withDefaults = (profile) => ({
   dateOfBirth: profile.dateOfBirth ?? null,
   address: profile.address ?? null,
   githubId: profile.githubId ?? null,
+  avatar: profile.avatar ?? null,
 });
 
 // The ONLY way a user leaves this service: without the password hash.
@@ -114,8 +115,16 @@ export class UsersService {
     return toPublicUser(user);
   }
 
+ 
+
   async #assertEmailAvailable(email, exceptId) {
     const existing = await this.users.findByEmail(email);
     if (existing && existing.id !== exceptId) throw conflict(`Email ${email} is already registered`);
+  }
+
+   // ── New in 2.4 ──
+  async setAvatar(id, avatar) {
+    await this.getById(id);
+    return toPublicUser(await this.users.update(id, { avatar }));
   }
 }
